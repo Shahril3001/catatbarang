@@ -14,10 +14,8 @@ class HiveDB {
       noteBox =
           await Hive.openBox<Note>('catatBarang'); // Open the box for notes
     } catch (e) {
-      // Handle initialization errors
       print('Error initializing Hive: $e');
-      throw Exception(
-          'Failed to initialize Hive'); // Throwing an exception to handle at the calling level
+      throw Exception('Failed to initialize Hive');
     }
   }
 
@@ -26,29 +24,26 @@ class HiveDB {
     try {
       await noteBox.put(note.id, note); // Ensure id is unique
     } catch (e) {
-      // Handle errors when adding the note
       print('Error adding note: $e');
       throw Exception('Failed to add note');
     }
   }
 
-  // Get all notes from the Hive box (asynchronous)
+  // Get all notes from the Hive box
   static Future<List<Note>> getNotes() async {
     try {
-      return noteBox.values.toList(); // Convert the notes into a list
+      return noteBox.values.toList();
     } catch (e) {
-      // Handle errors when retrieving notes
       print('Error retrieving notes: $e');
-      return []; // Return an empty list on error
+      return [];
     }
   }
 
-  // Delete a note by its id
+  // Delete a note by its ID
   static Future<void> deleteNote(String id) async {
     try {
-      await noteBox.delete(id); // Ensure the note exists before deleting
+      await noteBox.delete(id);
     } catch (e) {
-      // Handle errors when deleting the note
       print('Error deleting note: $e');
       throw Exception('Failed to delete note');
     }
@@ -57,9 +52,8 @@ class HiveDB {
   // Update an existing note
   static Future<void> updateNote(Note note) async {
     try {
-      await noteBox.put(note.id, note); // This will overwrite the existing note
+      await noteBox.put(note.id, note);
     } catch (e) {
-      // Handle errors when updating the note
       print('Error updating note: $e');
       throw Exception('Failed to update note');
     }
@@ -68,7 +62,7 @@ class HiveDB {
   // Delete all notes (Reset function)
   static Future<void> clearAllNotes() async {
     try {
-      await noteBox.clear(); // Clears all data in the box
+      await noteBox.clear();
       print("All notes have been deleted.");
     } catch (e) {
       print('Error deleting all notes: $e');
@@ -76,8 +70,44 @@ class HiveDB {
     }
   }
 
-  // Close the Hive box (call when app is closed or no longer needed)
+  // Get all items from all notes
+  static Future<List<Item>> getAllItems() async {
+    try {
+      return noteBox.values.expand((note) => note.items).toList();
+    } catch (e) {
+      print('Error retrieving items: $e');
+      return [];
+    }
+  }
+
+  // Search items by name
+  static Future<List<Item>> searchItemsByName(String query) async {
+    try {
+      final allItems = await getAllItems();
+      return allItems
+          .where(
+              (item) => item.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      print('Error searching items: $e');
+      return [];
+    }
+  }
+
+  // Close the Hive box
   static Future<void> closeBox() async {
     await noteBox.close();
+  }
+
+  // Delete all items (Reset function)
+  static Future<void> clearAllItems() async {
+    try {
+      await noteBox
+          .clear(); // This clears all notes, including items within them
+      print("All items have been deleted.");
+    } catch (e) {
+      print('Error deleting all items: $e');
+      throw Exception('Failed to delete all items');
+    }
   }
 }

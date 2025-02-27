@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/item.dart';
+import 'package:catatbarang/db/hive_db.dart';
 
 class AddItemPage extends StatefulWidget {
   @override
@@ -13,6 +14,11 @@ class _AddItemPageState extends State<AddItemPage> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String _selectedType = "Buah"; // Default type
+  List<String> _suggestions = [];
+  bool _isSearching = false;
+  OverlayEntry? _overlayEntry; // Overlay entry reference
+  final LayerLink _layerLink = LayerLink(); // Positioning reference
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
@@ -20,9 +26,79 @@ class _AddItemPageState extends State<AddItemPage> {
     _quantityController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+    _focusNode.dispose();
+    _removeOverlay();
     super.dispose();
   }
 
+  Future<List<String>> _searchItems(String query) async {
+    try {
+      final List<Item> items = await HiveDB.searchItemsByName(query);
+      final List<String> suggestions =
+          items.map((item) => item.name).toSet().toList();
+      return suggestions;
+    } catch (e) {
+      print('Error searching items: $e');
+      return [];
+    }
+  }
+
+  void _showOverlay() {
+    _removeOverlay(); // Remove existing overlay before adding a new one
+    final OverlayState overlayState = Overlay.of(context);
+    _overlayEntry = _createOverlayEntry();
+    overlayState.insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    return OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          left: MediaQuery.of(context).size.width * 0.1, // Center the overlay
+          width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+          child: CompositedTransformFollower(
+            link: _layerLink,
+            offset: Offset(0, 50), // Adjust position below text field
+            child: Material(
+              elevation: 4,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width *
+                      0.8, // Ensure width limit
+                ),
+                child: _suggestions.isNotEmpty
+                    ? ListView(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        children: _suggestions.map((suggestion) {
+                          return ListTile(
+                            title: Text(suggestion),
+                            onTap: () {
+                              setState(() {
+                                _nameController.text = suggestion;
+                                _suggestions = [];
+                              });
+                              _removeOverlay();
+                            },
+                          );
+                        }).toList(),
+                      )
+                    : SizedBox.shrink(), // Hide when no suggestions
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Fungsi untuk menyimpan item
   void _saveItem() {
     if (_nameController.text.isEmpty ||
         _quantityController.text.isEmpty ||
@@ -133,15 +209,33 @@ class _AddItemPageState extends State<AddItemPage> {
               ),
               child: Column(
                 children: [
-                  /// Nama Barang
-                  TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: "Nama Barang",
-                      prefixIcon: Icon(Icons.edit, color: Colors.blueAccent),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  /// Nama Barang with Overlay
+                  CompositedTransformTarget(
+                    link: _layerLink,
+                    child: TextField(
+                      controller: _nameController,
+                      focusNode: _focusNode,
+                      decoration: InputDecoration(
+                        labelText: "Nama Barang",
+                        prefixIcon: Icon(Icons.edit, color: Colors.blueAccent),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
+                      onChanged: (value) {
+                        setState(() => _isSearching = true);
+                        _searchItems(value).then((suggestions) {
+                          setState(() {
+                            _suggestions = suggestions;
+                            _isSearching = false;
+                          });
+                          if (_suggestions.isNotEmpty) {
+                            _showOverlay();
+                          } else {
+                            _removeOverlay();
+                          }
+                        });
+                      },
                     ),
                   ),
                   SizedBox(height: 12),
