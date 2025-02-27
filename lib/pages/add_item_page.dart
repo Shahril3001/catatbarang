@@ -68,9 +68,12 @@ class _AddItemPageState extends State<AddItemPage> {
               elevation: 4,
               borderRadius: BorderRadius.circular(12),
               child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white10, // Background color
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width *
-                      0.8, // Ensure width limit
+                  maxWidth: MediaQuery.of(context).size.width * 0.8,
                 ),
                 child: _suggestions.isNotEmpty
                     ? ListView(
@@ -89,7 +92,7 @@ class _AddItemPageState extends State<AddItemPage> {
                           );
                         }).toList(),
                       )
-                    : SizedBox.shrink(), // Hide when no suggestions
+                    : SizedBox.shrink(),
               ),
             ),
           ),
