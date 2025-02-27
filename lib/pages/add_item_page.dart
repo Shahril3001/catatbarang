@@ -18,7 +18,17 @@ class _AddItemPageState extends State<AddItemPage> {
   bool _isSearching = false;
   OverlayEntry? _overlayEntry; // Overlay entry reference
   final LayerLink _layerLink = LayerLink(); // Positioning reference
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode(); // Focus node for the text field
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        _removeOverlay(); // Remove overlay when focus is lost
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -69,7 +79,7 @@ class _AddItemPageState extends State<AddItemPage> {
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white10, // Background color
+                  color: Colors.white, // Background color
                   borderRadius: BorderRadius.circular(12),
                 ),
                 constraints: BoxConstraints(
