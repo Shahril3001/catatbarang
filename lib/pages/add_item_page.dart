@@ -13,7 +13,8 @@ class _AddItemPageState extends State<AddItemPage> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  String _selectedType = "Buah"; // Default type
+  String _selectedType =
+      "buah"; // Default type (gunakan lowercase untuk konsistensi)
   List<String> _suggestions = [];
   bool _isSearching = false;
   OverlayEntry? _overlayEntry; // Overlay entry reference
@@ -98,6 +99,8 @@ class _AddItemPageState extends State<AddItemPage> {
                                 _suggestions = [];
                               });
                               _removeOverlay();
+                              _autoAssignItemDetails(
+                                  suggestion); // Auto-assign details when item is selected
                             },
                           );
                         }).toList(),
@@ -111,6 +114,22 @@ class _AddItemPageState extends State<AddItemPage> {
     );
   }
 
+  Future<void> _autoAssignItemDetails(String query) async {
+    if (query.isEmpty) return;
+    try {
+      final List<Item> items = await HiveDB.searchItemsByName(query);
+      if (items.isNotEmpty) {
+        setState(() {
+          // Normalisasi data dari Hive DB ke lowercase
+          _selectedType = items.first.type.toLowerCase();
+          _priceController.text = items.first.price.toString();
+        });
+      }
+    } catch (e) {
+      print('Error auto-assigning item details: $e');
+    }
+  }
+
   // Fungsi untuk menyimpan item
   void _saveItem() {
     if (_nameController.text.isEmpty ||
@@ -118,7 +137,7 @@ class _AddItemPageState extends State<AddItemPage> {
         _priceController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Sila isi semua field yang diperlukan"),
+          content: Text("Sila isi semua kotak yang diperlukan"),
           backgroundColor: Colors.red,
         ),
       );
@@ -248,6 +267,8 @@ class _AddItemPageState extends State<AddItemPage> {
                             _removeOverlay();
                           }
                         });
+                        _autoAssignItemDetails(
+                            value); // Auto-assign details when typing
                       },
                     ),
                   ),
@@ -264,7 +285,8 @@ class _AddItemPageState extends State<AddItemPage> {
                     ),
                     items: ["Buah", "Sayur", "Ikan", "Lain-lain"]
                         .map((type) => DropdownMenuItem(
-                              value: type,
+                              value: type
+                                  .toLowerCase(), // Normalisasi nilai dropdown
                               child: Row(
                                 children: [
                                   Icon(_getItemIcon(type),
