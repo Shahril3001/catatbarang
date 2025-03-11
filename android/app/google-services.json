@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1098458123838",
+    "project_id": "catatbarang-672da",
+    "storage_bucket": "catatbarang-672da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098458123838:android:7f951f1c008b3e44078b6f",
+        "android_client_info": {
+          "package_name": "com.example.catatbarang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxP6ZFymsJ1jywJqvVuT2zv8oqotYuMD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

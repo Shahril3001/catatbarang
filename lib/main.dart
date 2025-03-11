@@ -3,9 +3,12 @@ import 'package:provider/provider.dart';
 import 'db/hive_db.dart';
 import 'providers/note_provider.dart';
 import 'pages/note_list_page.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await HiveDB.init();
   runApp(MyApp());
 }

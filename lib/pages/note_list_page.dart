@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:catatbarang/db/hive_db.dart';
+import 'package:catatbarang/providers/note_firebase.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'developer.dart';
@@ -228,29 +229,169 @@ class _NoteListPageState extends State<NoteListPage>
               },
             ),
             ExpansionTile(
-              backgroundColor:
-                  Colors.transparent, // Tidak ada background saat diperluas
+              backgroundColor: Colors.transparent,
               collapsedBackgroundColor: Colors.transparent,
-              leading:
-                  Icon(Icons.storage, color: Colors.blueGrey), // Ikon kategori
+              leading: Icon(Icons.storage, color: Colors.blueGrey),
               title: Text("Kelola Data"),
               children: [
+                // HIVE - Import
                 ListTile(
                   leading: Icon(Icons.file_upload, color: Colors.blue),
-                  title: Text("Impor Data"),
-                  onTap: () {
-                    Navigator.pop(context);
-                    FileHelper.importNotes(context); // Panggil fungsi import
+                  title: Text("Impor Data (Hive)"),
+                  onTap: () async {
+                    bool confirmImport = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Pengesahan Import"),
+                          content: Text(
+                              "Adakah anda pasti mahu mengimport data dari Hive? Data sedia ada tidak akan dipadam."),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, false), // Batal
+                              child: Text("Batal"),
+                            ),
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, true), // Import
+                              child: Text("Import",
+                                  style: TextStyle(color: Colors.green)),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (confirmImport) {
+                      await FileHelper.importNotes(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                                Text("✅ Data berjaya diimport dari Hive!")),
+                      );
+                    }
                   },
                 ),
+                // HIVE - Export
                 ListTile(
                   leading: Icon(Icons.file_download, color: Colors.orange),
-                  title: Text("Ekspor Data"),
-                  onTap: () {
-                    Navigator.pop(context);
-                    FileHelper.exportNotes(context); // Panggil fungsi export
+                  title: Text("Ekspor Data (Hive)"),
+                  onTap: () async {
+                    bool confirmExport = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Pengesahan Ekspor"),
+                          content: Text(
+                              "Adakah anda pasti mahu mengeksport data ke Hive? Data lama akan dikemas kini."),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, false), // Batal
+                              child: Text("Batal"),
+                            ),
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, true), // Eksport
+                              child: Text("Eksport",
+                                  style: TextStyle(color: Colors.orange)),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (confirmExport) {
+                      await FileHelper.exportNotes(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text("✅ Data berjaya dieksport ke Hive!")),
+                      );
+                    }
                   },
                 ),
+                Divider(),
+                // FIREBASE - Import
+                ListTile(
+                  leading: Icon(Icons.cloud_upload, color: Colors.blue),
+                  title: Text("Impor Data (Firebase)"),
+                  onTap: () async {
+                    bool confirmImport = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Pengesahan Import"),
+                          content: Text(
+                              "Adakah anda pasti mahu mengimport data dari Firebase? Data sedia ada tidak akan dipadam."),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, false), // Batal
+                              child: Text("Batal"),
+                            ),
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, true), // Import
+                              child: Text("Import",
+                                  style: TextStyle(color: Colors.green)),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (confirmImport) {
+                      await FirebaseHelper.importNotesFromFirebase();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                                Text("✅ Data berjaya diimport dari Firebase!")),
+                      );
+                    }
+                  },
+                ),
+                // FIREBASE - Export
+                ListTile(
+                  leading: Icon(Icons.cloud_download, color: Colors.orange),
+                  title: Text("Ekspor Data (Firebase)"),
+                  onTap: () async {
+                    bool confirmExport = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Pengesahan Ekspor"),
+                          content: Text(
+                              "Adakah anda pasti mahu mengeksport data ke Firebase? Data lama akan dikemas kini."),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, false), // Batal
+                              child: Text("Batal"),
+                            ),
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, true), // Eksport
+                              child: Text("Eksport",
+                                  style: TextStyle(color: Colors.orange)),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (confirmExport) {
+                      await FirebaseHelper.exportNotesToFirebase();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                                Text("✅ Data berjaya dieksport ke Firebase!")),
+                      );
+                    }
+                  },
+                ),
+                Divider(),
+                // DELETE ALL DATA
                 ListTile(
                   leading: Icon(Icons.delete_forever, color: Colors.red),
                   title: Text("Padam Semua Data"),
@@ -279,11 +420,12 @@ class _NoteListPageState extends State<NoteListPage>
                       },
                     );
 
-                    if (confirmDelete == true) {
+                    if (confirmDelete) {
                       await HiveDB
                           .clearAllNotes(); // Panggil fungsi untuk hapus semua catatan
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Semua data telah dipadam.")),
+                        SnackBar(
+                            content: Text("🗑️ Semua data telah dipadam.")),
                       );
                     }
                   },
