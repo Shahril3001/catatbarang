@@ -237,13 +237,13 @@ class _NoteListPageState extends State<NoteListPage>
                 // HIVE - Import
                 ListTile(
                   leading: Icon(Icons.file_upload, color: Colors.blue),
-                  title: Text("Impor Data (Hive)"),
+                  title: Text("Impor Lokal Data"),
                   onTap: () async {
                     bool confirmImport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Import"),
+                          title: Text("Pengesahan Impor Lokal Data"),
                           content: Text(
                               "Adakah anda pasti mahu mengimport data dari Hive? Data sedia ada tidak akan dipadam."),
                           actions: [
@@ -252,11 +252,12 @@ class _NoteListPageState extends State<NoteListPage>
                                   Navigator.pop(context, false), // Batal
                               child: Text("Batal"),
                             ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, true), // Import
-                              child: Text("Import",
-                                  style: TextStyle(color: Colors.green)),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green),
+                              child: Text("Impor",
+                                  style: TextStyle(color: Colors.white)),
                             ),
                           ],
                         );
@@ -271,13 +272,13 @@ class _NoteListPageState extends State<NoteListPage>
                 // HIVE - Export
                 ListTile(
                   leading: Icon(Icons.file_download, color: Colors.orange),
-                  title: Text("Ekspor Data (Hive)"),
+                  title: Text("Ekspor Lokal Data"),
                   onTap: () async {
                     bool confirmExport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Ekspor"),
+                          title: Text("Pengesahan Ekspor Lokal Data"),
                           content: Text(
                               "Adakah anda pasti mahu mengeksport data ke Hive? Data lama akan dikemas kini."),
                           actions: [
@@ -286,11 +287,12 @@ class _NoteListPageState extends State<NoteListPage>
                                   Navigator.pop(context, false), // Batal
                               child: Text("Batal"),
                             ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, true), // Eksport
-                              child: Text("Eksport",
-                                  style: TextStyle(color: Colors.orange)),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange),
+                              child: Text("Ekspor",
+                                  style: TextStyle(color: Colors.white)),
                             ),
                           ],
                         );
@@ -306,26 +308,27 @@ class _NoteListPageState extends State<NoteListPage>
                 // FIREBASE - Import
                 ListTile(
                   leading: Icon(Icons.cloud_upload, color: Colors.blue),
-                  title: Text("Impor Data (Firebase)"),
+                  title: Text("Impor Awan Data"),
                   onTap: () async {
                     bool confirmImport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Import"),
+                          title: Text("Pengesahan Impor Awan Data"),
                           content: Text(
-                              "Adakah anda pasti mahu mengimport data dari Firebase? Data sedia ada tidak akan dipadam."),
+                              "Adakah anda pasti mahu mengimpor data dari Firebase? Data sedia ada tidak akan dipadam."),
                           actions: [
                             TextButton(
                               onPressed: () =>
                                   Navigator.pop(context, false), // Batal
                               child: Text("Batal"),
                             ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, true), // Import
-                              child: Text("Import",
-                                  style: TextStyle(color: Colors.green)),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green),
+                              child: Text("Impor",
+                                  style: TextStyle(color: Colors.white)),
                             ),
                           ],
                         );
@@ -340,26 +343,27 @@ class _NoteListPageState extends State<NoteListPage>
                 // FIREBASE - Export
                 ListTile(
                   leading: Icon(Icons.cloud_download, color: Colors.orange),
-                  title: Text("Ekspor Data (Firebase)"),
+                  title: Text("Ekspor Awan Data"),
                   onTap: () async {
                     bool confirmExport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Ekspor"),
+                          title: Text("Pengesahan Ekspor Awan Data"),
                           content: Text(
-                              "Adakah anda pasti mahu mengeksport data ke Firebase? Data lama akan dikemas kini."),
+                              "Adakah anda pasti mahu mengekspor data ke Firebase? Data lama akan dikemas kini."),
                           actions: [
                             TextButton(
                               onPressed: () =>
                                   Navigator.pop(context, false), // Batal
                               child: Text("Batal"),
                             ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, true), // Eksport
-                              child: Text("Eksport",
-                                  style: TextStyle(color: Colors.orange)),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange),
+                              child: Text("Ekspor",
+                                  style: TextStyle(color: Colors.white)),
                             ),
                           ],
                         );
@@ -390,11 +394,12 @@ class _NoteListPageState extends State<NoteListPage>
                                   Navigator.pop(context, false), // Batal
                               child: Text("Batal"),
                             ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, true), // Padam
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.redAccent),
                               child: Text("Padam",
-                                  style: TextStyle(color: Colors.redAccent)),
+                                  style: TextStyle(color: Colors.white)),
                             ),
                           ],
                         );
