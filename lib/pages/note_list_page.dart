@@ -235,15 +235,16 @@ class _NoteListPageState extends State<NoteListPage>
               title: Text("Kelola Data"),
               children: [
                 // HIVE - Import
+                Divider(),
                 ListTile(
-                  leading: Icon(Icons.file_upload, color: Colors.blue),
-                  title: Text("Impor Lokal Data"),
+                  leading: Icon(Icons.file_upload, color: Colors.blueAccent),
+                  title: Text("Import Lokal Data"),
                   onTap: () async {
                     bool confirmImport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Impor Lokal Data"),
+                          title: Text("Pengesahan Import Lokal Data"),
                           content: Text(
                               "Adakah anda pasti mahu mengimport data dari Hive? Data sedia ada tidak akan dipadam."),
                           actions: [
@@ -255,8 +256,8 @@ class _NoteListPageState extends State<NoteListPage>
                             ElevatedButton(
                               onPressed: () => Navigator.pop(context, true),
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green),
-                              child: Text("Impor",
+                                  backgroundColor: Colors.blueAccent),
+                              child: Text("Import",
                                   style: TextStyle(color: Colors.white)),
                             ),
                           ],
@@ -271,14 +272,14 @@ class _NoteListPageState extends State<NoteListPage>
                 ),
                 // HIVE - Export
                 ListTile(
-                  leading: Icon(Icons.file_download, color: Colors.orange),
-                  title: Text("Ekspor Lokal Data"),
+                  leading: Icon(Icons.file_download, color: Colors.amberAccent),
+                  title: Text("Eksport Lokal Data"),
                   onTap: () async {
                     bool confirmExport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Ekspor Lokal Data"),
+                          title: Text("Pengesahan Eksport Lokal Data"),
                           content: Text(
                               "Adakah anda pasti mahu mengeksport data ke Hive? Data lama akan dikemas kini."),
                           actions: [
@@ -290,8 +291,8 @@ class _NoteListPageState extends State<NoteListPage>
                             ElevatedButton(
                               onPressed: () => Navigator.pop(context, true),
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange),
-                              child: Text("Ekspor",
+                                  backgroundColor: Colors.amberAccent),
+                              child: Text("Eksport",
                                   style: TextStyle(color: Colors.white)),
                             ),
                           ],
@@ -307,16 +308,16 @@ class _NoteListPageState extends State<NoteListPage>
                 Divider(),
                 // FIREBASE - Import
                 ListTile(
-                  leading: Icon(Icons.cloud_upload, color: Colors.blue),
-                  title: Text("Impor Awan Data"),
+                  leading: Icon(Icons.cloud_upload, color: Colors.blueAccent),
+                  title: Text("Import Cloud Data"),
                   onTap: () async {
                     bool confirmImport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Impor Awan Data"),
+                          title: Text("Pengesahan Import Cloud Data"),
                           content: Text(
-                              "Adakah anda pasti mahu mengimpor data dari Firebase? Data sedia ada tidak akan dipadam."),
+                              "Adakah anda pasti mahu mengimport data dari Firebase Cloud? Data sedia ada tidak akan dipadam."),
                           actions: [
                             TextButton(
                               onPressed: () =>
@@ -326,7 +327,7 @@ class _NoteListPageState extends State<NoteListPage>
                             ElevatedButton(
                               onPressed: () => Navigator.pop(context, true),
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green),
+                                  backgroundColor: Colors.blueAccent),
                               child: Text("Impor",
                                   style: TextStyle(color: Colors.white)),
                             ),
@@ -342,16 +343,17 @@ class _NoteListPageState extends State<NoteListPage>
                 ),
                 // FIREBASE - Export
                 ListTile(
-                  leading: Icon(Icons.cloud_download, color: Colors.orange),
-                  title: Text("Ekspor Awan Data"),
+                  leading:
+                      Icon(Icons.cloud_download, color: Colors.amberAccent),
+                  title: Text("Eksport Cloud Data"),
                   onTap: () async {
                     bool confirmExport = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Pengesahan Ekspor Awan Data"),
+                          title: Text("Pengesahan Eksport Cloud Data"),
                           content: Text(
-                              "Adakah anda pasti mahu mengekspor data ke Firebase? Data lama akan dikemas kini."),
+                              "Adakah anda pasti mahu mengeksport data ke Firebase Cloud? Data lama akan dikemas kini."),
                           actions: [
                             TextButton(
                               onPressed: () =>
@@ -361,8 +363,8 @@ class _NoteListPageState extends State<NoteListPage>
                             ElevatedButton(
                               onPressed: () => Navigator.pop(context, true),
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange),
-                              child: Text("Ekspor",
+                                  backgroundColor: Colors.amberAccent),
+                              child: Text("Eksport",
                                   style: TextStyle(color: Colors.white)),
                             ),
                           ],
