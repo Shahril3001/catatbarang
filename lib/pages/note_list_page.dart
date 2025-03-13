@@ -264,12 +264,7 @@ class _NoteListPageState extends State<NoteListPage>
                     );
 
                     if (confirmImport) {
-                      await FileHelper.importNotes(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content:
-                                Text("✅ Data berjaya diimport dari Hive!")),
-                      );
+                      await FirebaseHelper.importNotesFromFirebase(context);
                     }
                   },
                 ),
@@ -303,11 +298,7 @@ class _NoteListPageState extends State<NoteListPage>
                     );
 
                     if (confirmExport) {
-                      await FileHelper.exportNotes(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text("✅ Data berjaya dieksport ke Hive!")),
-                      );
+                      await FirebaseHelper.exportNotesToFirebase(context);
                     }
                   },
                 ),
@@ -342,12 +333,7 @@ class _NoteListPageState extends State<NoteListPage>
                     );
 
                     if (confirmImport) {
-                      await FirebaseHelper.importNotesFromFirebase();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content:
-                                Text("✅ Data berjaya diimport dari Firebase!")),
-                      );
+                      await FirebaseHelper.importNotesFromFirebase(context);
                     }
                   },
                 ),
@@ -381,12 +367,7 @@ class _NoteListPageState extends State<NoteListPage>
                     );
 
                     if (confirmExport) {
-                      await FirebaseHelper.exportNotesToFirebase();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content:
-                                Text("✅ Data berjaya dieksport ke Firebase!")),
-                      );
+                      await FirebaseHelper.exportNotesToFirebase(context);
                     }
                   },
                 ),
