@@ -328,7 +328,7 @@ class _NoteListPageState extends State<NoteListPage>
                               onPressed: () => Navigator.pop(context, true),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blueAccent),
-                              child: Text("Impor",
+                              child: Text("Import",
                                   style: TextStyle(color: Colors.white)),
                             ),
                           ],
